@@ -1,0 +1,89 @@
+---
+title: "Bracht_ R HW2"
+output: html_document
+date: "2026-02-22"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Install libraries
+library(tidyverse)
+library(ggplot2)
+  
+#Read csv  
+historical_spending <- read.csv("/Users/elizabethbracht/Desktop/historical_spending.csv")
+
+#Pivot Longer to combine gift types in order to later be able to sort by color on the graph
+historical_spending_long <- historical_spending %>%
+  pivot_longer(cols = c(Candy, Flowers, Jewelry, GreetingCards, EveningOut, Clothing, GiftCards), 
+               names_to = "GiftType", 
+               values_to = "Spending")
+               
+# Create the graph
+graph <- ggplot(historical_spending_long, aes(x = Year, y = Spending, color = GiftType)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE) + #show line of best fit, method=lm to indicate a       linear model and se=TRUE to show confidence   interval around the line
+  scale_x_continuous(limits = c(2010, 2022),  # Set x-axis limits, use continuous to scale x   because Year is a numeric variable and we have a small range
+                     breaks = seq(2010, 2022, by = 2)) +  # labels increase by 2 so axis is   not overly cluttered
+  labs(title = "Valentine's Day Spending by Gift Type", #add graph title
+       x = "Year",  #add x-axis title
+       y = "Avg Spending per Person ($)") #add y-axis title
+
+# Print the graph
+print(graph)
+            
+
+# Graph2
+graph2 <- ggplot(historical_spending_long, aes(x = Year, y = Spending, color = GiftType)) +
+  geom_line() +
+  scale_x_continuous(limits = c(2010, 2022),  # Set x-axis limits, use continuous to scale x   because Year is a numeric variable and we have a small range
+                     breaks = seq(2010, 2022, by = 2)) +  # labels increase by 2 so axis is   not overly cluttered
+  labs(title = "Valentine's Day Spending by Gift Type", #add graph title
+       x = "Year",  #add x-axis title
+       y = "Avg Spending per Person ($)") #add y-axis title
+       
+print(graph2)               
+               
+               
+               
+#Install plotly
+install.packages("plotly")
+library(plotly)
+
+interactive_graph <- ggplotly(graph)
+interactive_graph2 <- ggplotly(graph2)
+
+# Print the interactive graphs
+interactive_graph
+interactive_graph2
+
+ggsave(
+filename = "Bracht_R_HW2a.png",  # Use quotes for filename
+plot = graph,  # Specify which plot to save
+device = "png",  # Specify the device
+path = NULL,  # Default path
+scale = 1,
+width = 8,  
+height = 5,  
+units = "in",  # Choose units (inches)
+dpi = 300,  # Set resolution
+limitsize = TRUE,
+bg = NULL,
+create.dir = FALSE
+)
+
+ggsave(
+filename = "Bracht_R_HW2b.png",  # Use quotes for the filename
+plot = graph2,  # Specify which plot 
+device = "png", 
+path = NULL,
+scale = 1,
+width = 8,  
+height = 5, 
+units = "in", 
+dpi = 300,  
+limitsize = TRUE,
+bg = "transparent"
+)
