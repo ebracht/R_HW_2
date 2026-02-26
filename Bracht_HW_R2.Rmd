@@ -48,7 +48,7 @@ print(graph2)
                
                
                
-#Install plotly
+# Install & load plotly
 install.packages("plotly")
 library(plotly)
 
