@@ -8,12 +8,12 @@ date: "2026-02-22"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#Install libraries
+#Load libraries
 library(tidyverse)
 library(ggplot2)
-  
+
 #Read csv  
-historical_spending <- read.csv("/Users/elizabethbracht/Desktop/historical_spending.csv")
+historical_spending <- read_csv("historical_spending.csv")
 
 #Pivot Longer to combine gift types in order to later be able to sort by color on the graph
 historical_spending_long <- historical_spending %>%
